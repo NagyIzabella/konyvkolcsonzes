@@ -1,3 +1,6 @@
 {
-    "dotnet.defaultSolution": "ConsoleApp1.slnx"
+    "dotnet.defaultSolution": "ConsoleApp1.slnx",
+    "csharp-dev-tools.solutionViewer.selectedWorkspaceSolutions": [
+        "ConsoleApp1.slnx"
+    ]
 }
