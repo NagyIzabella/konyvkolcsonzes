@@ -1,5 +1,4 @@
 ﻿﻿using System.IO;
-using System.Threading.Channels;
 
 // konyvek.csv          id(int);nev(string);szerzo(string);felnott(bool);statusz(bool)\n
 // tagok.csv            id(int);nev(string);kor(int);tagsag_kezdete(string);tagsag_lejarata(string);kikolcsonzott_konyvek(list)
@@ -8,16 +7,41 @@ using System.Threading.Channels;
 if (!File.Exists("konyvek.csv")) File.WriteAllText("konyvek.csv", "id;nev;szerzo;felnott;statusz\n");
 if (!File.Exists("tagok.csv")) File.WriteAllText("tagok.csv", "id;nev;kor;tagsag_kezdete;tagsag_lejarata;kikolcsonzott_konyvek\n");
 if (!File.Exists("kolcsonzes.csv")) File.WriteAllText("kolcsonzes.csv", "konyv_id;tag_id_;datum;visszaviteli_ido;meghosszabbitasok\n");
+if (!File.Exists("login.csv")) File.WriteAllText("login.csv","felhasznalonev;jelszo\n");
+
 
 //--------------------------------------------------
 // Belépés
 
 string belepes() {
+    bool jo=false;
     Console.Write("Bejelentkezés\n\nFelhasználónév: ");
     string username = Console.ReadLine();
 
     Console.Write("Jelszó: ");
     string password = Console.ReadLine();
+
+    if (username == "admin" && password == "admin")
+    {
+        inditasAdmin();
+    }
+    else
+    {
+        foreach (string sor in File.ReadLines("tagok.csv"))
+        {
+            if (sor.Contains(username) && (sor.Contains(password)))
+            {
+                jo = true;
+                //user menu inditása
+            }
+        }
+
+        if (jo == false)
+        {
+            Console.WriteLine("HIBÁS FELHASZNÁLÓNÉV VAGY JELSZÓ!");
+        }
+    }
+
 
     // Ide kell a check hogy ki a felhasználó, vagy nem, rád bízom
 }
