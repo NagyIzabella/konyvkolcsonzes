@@ -1,4 +1,5 @@
 ﻿﻿using System.IO;
+using System.Threading.Channels;
 
 // konyvek.csv          id(int);nev(string);szerzo(string);felnott(bool);statusz(bool)\n
 // tagok.csv            id(int);nev(string);kor(int);tagsag_kezdete(string);tagsag_lejarata(string);kikolcsonzott_konyvek(list)
@@ -88,7 +89,7 @@ bool kolcsonzes() {
 
     switch(valasztas) {
         case "1": felvetelKolcsonzes(); break;
-        case "2": torlesKonyv(); break;
+        case "2": torlesKolcsonzes(); break;
         case "3": hosszabitasKolcsonzes(); break;
         case "0": Console.WriteLine("Kilépés. . ."); break;
         default: sikeres = false; break;
@@ -97,9 +98,26 @@ bool kolcsonzes() {
     return sikeres;
 }
 
-bool felvetelTag() {
+bool kereses() {
+    Console.Write("--------------------\nKeresés\n\n1) Tagok keresése\n2) Könyvek keresése\n3) Kölcsönzések listája\n0) Kilépés\n\nA választott funkció betűjele: ");
+    string valasztas = Console.ReadLine();
     bool sikeres = true;
-    Console.Write("Azonosító: ");
+
+    switch(valasztas) {
+        case "1": felvetelKolcsonzes(); break;
+        case "2": torlesKolcsonzes(); break;
+        case "3": hosszabitasKolcsonzes(); break;
+        case "0": Console.WriteLine("Kilépés. . ."); break;
+        default: sikeres = false; break;
+    }
+
+    return sikeres;
+}
+
+bool felvetelTag()
+{
+    bool sikeres = true;
+    Console.Write("--------------------\nTag hozzáadása\n\nAzonosító: ");
     string id = Console.ReadLine();
 
     Console.Write("Név: ");
@@ -131,8 +149,60 @@ bool felvetelTag() {
     return sikeres;
 }
 
+bool torlesTag()
+{
+    bool sikeres = true;
+    bool benne = false;
+    Console.Write("--------------------\nTag törlése\n\nAzonosító: ");
+    string id = Console.ReadLine();
+
+    Console.Write("Név: ");
+    string nev = Console.ReadLine();
+
+    Console.Write("Kor: ");
+    int kor = int.Parse(Console.ReadLine());
+
+    string[] tagok = File.ReadAllLines("tagok.csv");
+    List<string> ujTagok = [];
+
+    foreach (string tag in tagok.Skip(1))
+    {
+        string[] adatok = tag.Split(";");
+        if (normalizal(adatok[0]) == id && normalizal(adatok[1]) == nev && int.Parse(adatok[2]) == kor)
+        {
+            benne = true;
+        }
+        else
+        {
+            ujTagok.Add(tag);
+        }
+    }
+
+    if (!benne)
+    {
+        Console.WriteLine("Sikertelen törlés: A tag nem szerepel a nyilvántartásban!");
+        sikeres = false;
+    }
+    else
+    {
+        foreach (string sor in ujTagok)
+        {
+            File.AppendAllText("tagok.csv", sor);
+        }
+    }
+
+    return sikeres;
+}
+
+bool 
+
 //--------------------------------------------------
 // User
+
+void inditasUser()
+{
+    Console.WriteLine("tbt");
+}
 
 //--------------------------------------------------
 // Indító
