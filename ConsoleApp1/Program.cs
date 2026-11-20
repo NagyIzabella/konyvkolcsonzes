@@ -24,6 +24,11 @@ string belepes() {
 //--------------------------------------------------
 // Admin
 
+string normalizal(string bemenet)
+{
+    return bemenet.ToUpper().Replace(" ", "").Replace("-", "").Replace("_", "");
+}
+
 bool inditasAdmin() {
     Console.Write("1) Tag\n2) Könyv\n3) Kölcsönzés\n4) Keresés\n0) Kilépés\n\nA választott funkció betűjele: ");
     string valasztas = Console.ReadLine();
@@ -93,8 +98,9 @@ bool kolcsonzes() {
 }
 
 bool felvetelTag() {
+    bool sikeres = true;
     Console.Write("Azonosító: ");
-    int id = int.Parse(Console.ReadLine());
+    string id = Console.ReadLine();
 
     Console.Write("Név: ");
     string nev = Console.ReadLine();
@@ -102,7 +108,27 @@ bool felvetelTag() {
     Console.Write("Kor: ");
     int kor = int.Parse(Console.ReadLine());
 
-    DateOnly datum = new();
+    DateOnly felvetel = new();
+
+    DateOnly lejarat = felvetel.AddMonths(3);
+
+    string[] tagok = File.ReadAllLines("tagok.csv");
+
+    foreach (string tag in tagok.Skip(1))
+    {
+        string[] adatok = tag.Split(";");
+        if (normalizal(adatok[0]) == normalizal(id))
+        {
+            Console.WriteLine("Sikertelen hozzáadás: Ilyen azonosítójú tag már létezik!");
+            sikeres = false;
+            return sikeres;
+        }
+    }
+
+    using StreamWriter sw = File.AppendText("tagok.csv");
+    sw.WriteLine($"{id};{nev};{kor};{felvetel};{lejarat};nincs");
+
+    return sikeres;
 }
 
 //--------------------------------------------------
