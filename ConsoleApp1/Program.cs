@@ -142,7 +142,7 @@ bool konyv() {
 }
 
 bool kolcsonzes() {
-    Console.Write("--------------------\nKölcsönzés\n\n1) Kölcsönzés hozzáadása\n2) Kölcsönzés törlése\n3) Kölcsönzés hosszabítása\n0) Kilépés\n\nA választott funkció betűjele: ");
+    Console.Write("--------------------\nKölcsönzés\n\n1) Kölcsönzés rögzítése\n2) Kölcsönzés törlése\n3) Kölcsönzés hosszabítása\n0) Kilépés\n\nA választott funkció betűjele: ");
     string valasztas = Console.ReadLine();
     bool sikeres = true;
 
@@ -181,10 +181,10 @@ bool felvetelTag()
     Console.Write("--------------------\nTag hozzáadása\n\nAzonosító: ");
     string id = Console.ReadLine();
 
-    Console.Write("Név: ");
+    Console.Write("\nNév: ");
     string nev = Console.ReadLine();
 
-    Console.Write("Kor: ");
+    Console.Write("\nKor: ");
     string korBemenet = Console.ReadLine();
     if (szamE(korBemenet))
     {
@@ -194,7 +194,7 @@ bool felvetelTag()
 
         if (string.IsNullOrWhiteSpace(id) || string.IsNullOrWhiteSpace(nev))
         {
-            Console.WriteLine("Sikertelen hozzáadás: Adjon meg minden adatot!");
+            Console.WriteLine("\nSikertelen hozzáadás: Adjon meg minden adatot!");
             return false;
         }
 
@@ -205,7 +205,7 @@ bool felvetelTag()
             string[] adatok = tag.Split(";");
             if (normalizal(adatok[0]) == normalizal(id))
             {
-                Console.WriteLine("Sikertelen hozzáadás: Ilyen azonosítójú tag már létezik!");
+                Console.WriteLine("\nSikertelen hozzáadás: Ilyen azonosítójú tag már létezik!");
                 return false;
             }
         }
@@ -213,11 +213,14 @@ bool felvetelTag()
         using StreamWriter sw = File.AppendText("tagok.csv");
         sw.WriteLine($"{id};{nev};{kor};{felvetel};{lejarat};nincs");
 
+        using StreamWriter swLogin = File.AppendText("login.csv");
+        sw.WriteLine($"{nev};{id}");
+
         return true;
     }
     else
     {
-        Console.WriteLine("Sikertelen hozzáadás: Érvénytelen életkor!");
+        Console.WriteLine("\nSikertelen hozzáadás: Érvénytelen életkor!");
         return false;
     }
 }
@@ -232,7 +235,7 @@ bool torlesTag()
 
     if (string.IsNullOrWhiteSpace(id))
     {
-        Console.WriteLine("Sikertelen törlés: Adjon meg egy azonosítót!");
+        Console.WriteLine("\nSikertelen törlés: Adjon meg egy azonosítót!");
         return false;
     }
 
@@ -253,7 +256,7 @@ bool torlesTag()
     }
     if (!benne)
     {
-        Console.WriteLine("Sikertelen törlés: A tag nem szerepel a nyilvántartásban!");
+        Console.WriteLine("\nSikertelen törlés: A tag nem szerepel a nyilvántartásban!");
         sikeres = false;
     }
     else
@@ -270,11 +273,11 @@ void listazasTag()
 
     if (sorok.Length == 1)
     {
-        Console.WriteLine("Jelenleg nincsenek regisztrált tagok.");
+        Console.WriteLine("\nJelenleg nincsenek regisztrált tagok.");
     }
     else
     {
-        Console.WriteLine($"Jelenlegi tagok száma: {sorok.Length - 1}");
+        Console.WriteLine($"\nJelenlegi tagok száma: {sorok.Length - 1}");
         foreach (string sor in sorok.Skip(1))
         {
             string[] adatok = sor.Split(";");
@@ -283,7 +286,7 @@ void listazasTag()
     }
 }
 
-bool modositasTag()
+bool modositasTag()                                                                 // Írjam át
 {
     bool sikeres = true;
     bool benne = false;
@@ -341,21 +344,21 @@ bool felvetelKonyv()
     Console.Write("--------------------\nKönyv hozzáadása\n\nAzonosító: ");
     string id = Console.ReadLine();
 
-    Console.Write("Cím: ");
+    Console.Write("\nCím: ");
     string cim = Console.ReadLine();
 
-    Console.Write("Szerző: ");
+    Console.Write("\nSzerző: ");
     string szerzo = Console.ReadLine();
 
-    Console.Write("Műfaj: ");
+    Console.Write("\nMűfaj: ");
     string mufaj = Console.ReadLine();
 
-    Console.Write("Besorolás (0 -- nem korhatáros; 1 -- korhatáros): ");
+    Console.Write("\nBesorolás (0 -- nem korhatáros; 1 -- korhatáros): ");
     string besorolas = Console.ReadLine();
 
     if (string.IsNullOrWhiteSpace(id) || string.IsNullOrWhiteSpace(cim) || string.IsNullOrWhiteSpace(szerzo) || string.IsNullOrWhiteSpace(mufaj) || !besorolasCheck(besorolas))
     {
-        Console.WriteLine("Sikertelen hozzáadás: Kérem, adjon meg minden adatot!");
+        Console.WriteLine("\nSikertelen hozzáadás: Kérem, adjon meg minden adatot!");
         return false;
     }
 
@@ -366,12 +369,13 @@ bool felvetelKonyv()
         string[] adatok = konyv.Split(";");
         if (normalizal(adatok[0]) == normalizal(id))
         {
-            Console.WriteLine("Sikertelen hozzáadás: Ilyen azonosítójú könyv már létezik!");
+            Console.WriteLine("\nSikertelen hozzáadás: Ilyen azonosítójú könyv már létezik!");
             return false;
         }
     }
 
     using StreamWriter sw = File.AppendText("konyvek.csv");
+using static System.Runtime.InteropServices.JavaScript.JSType;
     sw.WriteLine($"{id};{cim};{szerzo};{mufaj};{besorolas == "1"};{true}");
 
     return true;
@@ -387,7 +391,7 @@ bool torlesKonyv()
 
     if (string.IsNullOrWhiteSpace(id))
     {
-        Console.WriteLine("Sikertelen törlés: Adjon meg egy azonosítót!");
+        Console.WriteLine("\nSikertelen törlés: Adjon meg egy azonosítót!");
         return false;
     }
 
@@ -408,7 +412,7 @@ bool torlesKonyv()
     }
     if (!benne)
     {
-        Console.WriteLine("Sikertelen törlés: A könyv nem szerepel a nyilvántartásban!");
+        Console.WriteLine("\nSikertelen törlés: A könyv nem szerepel a nyilvántartásban!");
         sikeres = false;
     }
     else
@@ -425,11 +429,11 @@ void listazasKonyv()
 
     if (sorok.Length == 1)
     {
-        Console.WriteLine("Jelenleg nincsenek regisztrált könyvek.");
+        Console.WriteLine("\nJelenleg nincsenek regisztrált könyvek.");
     }
     else
     {
-        Console.WriteLine($"Jelenlegi könyvek száma: {sorok.Length - 1}");
+        Console.WriteLine($"\nJelenlegi könyvek száma: {sorok.Length - 1}");
         foreach (string sor in sorok.Skip(1))
         {
             string[] adatok = sor.Split(";");
@@ -445,15 +449,15 @@ bool modositasKonyv()
     Console.Write("--------------------\nKönyv adatmódosítása\n\nAzonosító: ");
     string id = Console.ReadLine();
 
-    Console.Write("Régi adat (Korhatár alapján történő besorolás esetén '1' vagy 'TRUE' ha korhatáros, '0' vagy 'FALSE' ha nem): ");
+    Console.Write("\nRégi adat (Korhatár alapján történő besorolás esetén '1' vagy 'TRUE' ha korhatáros, '0' vagy 'FALSE' ha nem): ");
     string regiAdat = Console.ReadLine();
 
-    Console.Write("Új adat (Korhatár alapján történő besorolás esetén '1' vagy 'TRUE' ha korhatáros, '0' vagy 'FALSE' ha nem):");
+    Console.Write("\nÚj adat (Korhatár alapján történő besorolás esetén '1' vagy 'TRUE' ha korhatáros, '0' vagy 'FALSE' ha nem):");
     string ujAdat = Console.ReadLine();
 
     if (string.IsNullOrWhiteSpace(id)|| string.IsNullOrWhiteSpace(regiAdat) || string.IsNullOrWhiteSpace(ujAdat))
     {
-        Console.WriteLine("Sikertelen módosítás: Adjon meg minden adatot!");
+        Console.WriteLine("\nSikertelen módosítás: Adjon meg minden adatot!");
         return false;
     }
 
@@ -476,7 +480,7 @@ bool modositasKonyv()
 
     if (!benne)
     {
-        Console.WriteLine("Sikertelen módosítás: Ilyen azonosítóval/adattal rendelkező könyv nem szerepel a nyilvántartásban!");
+        Console.WriteLine("\nSikertelen módosítás: Ilyen azonosítóval/adattal rendelkező könyv nem szerepel a nyilvántartásban!");
         sikeres = false;
     }
     else
@@ -490,9 +494,33 @@ bool modositasKonyv()
 //-------------------------
 // Kölcsönzés
 
-bool felvetelKolcsonzes()
+bool felvetelKolcsonzes()                                                          // tag.csv átírás
 {
-    return false;
+    Console.WriteLine("--------------------\nKölcsönzés rögzítése\n\nKönyv azonosítója: ");
+    string konyvId = Console.ReadLine();
+
+    Console.WriteLine("\nTag azonosítója: ");
+    string tagId = Console.ReadLine();
+
+    string[] konyvek = File.ReadAllLines("konyvek.csv");
+
+    foreach (string konyv in konyvek)
+    {
+        string[] adatok = konyv.Split(";");
+        if (adatok[0] == konyvId && bool.Parse(adatok[5]))
+        {
+            Console.WriteLine("Sikertelen rögzítés: A könyv már ki van kölcsönözve!");
+            return false;
+        }
+    }
+
+    DateOnly kezdet = DateOnly.FromDateTime(DateTime.Now);
+    DateOnly lejarat = kezdet.AddMonths(1);
+
+    using StreamWriter sw = File.AppendText("kolcsonzes.csv");
+    sw.WriteLine($"{konyvId};{tagId};{kezdet};{lejarat};0");
+
+    return true;
 }
 
 bool torlesKolcsonzes()
@@ -528,8 +556,20 @@ bool kolcsonzesKereses()
 
 bool inditasUser()
 {
-    Console.WriteLine("tbt");
-    return false;
+    Console.Write("1) Tag\n2) Könyv\n3) Kölcsönzés\n4) Keresés\n0) Kilépés\n\nA választott funkció betűjele: ");
+    string valasztas = Console.ReadLine();
+    bool sikeres = true;
+
+    switch(valasztas) {
+    case "1": konyvKereses(); break;
+    case "2": profil(); break;
+    case "3": torles(); break;
+    case "4": kivettKonyvek(); break;
+    case "0": Console.WriteLine("Kilépés. . ."); break;
+    default: Console.WriteLine("Sikertelen indítás! Adjon meg egy létező opciót!"); sikeres = false; break;
+    }
+
+    return sikeres;
 }
 
 //--------------------------------------------------
