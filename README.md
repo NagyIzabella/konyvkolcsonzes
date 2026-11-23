@@ -4,14 +4,15 @@ A programot készítette *Nagy Izabella*, és *Tóth Álmos*
 
 Ez egy könyvtáros program ahol lehet könyvelni könyvkölcsönzést, számontartani a teljes könyvtár tartalmát, könyvek hollétét és a tagságokat kezelni.
 
-## Fiókok
+## Bejelentkezés
 
-Különféle fiók van a könyvtárosoknak és a tagoknak. A bejelentkezéshez a jelszavakat hash-eljük.
+A program indítása után be kell jelentkezni. Különféle fiók van a könyvtárosoknak és a tagoknak. A könyvtáros fiókjának `admin` jogosultsága van, az olvasó tagoknak `user` jogosultsága van. A bejelentkezéshez a jelszavakat hash-eljük.
 
 ## Admin főmenü
+Az `admin`, azaz könyvtáros, minden funkcióját használhatja a programnak. 
 
 ### 1. Tag
-Itt lehet kezelni az olvasó tagokat és adatait
+Itt lehet kezelni az olvasó tagokat és adatait.
 
 - 1 **Tag felvétele**
     - új tagok felvétele
@@ -23,7 +24,7 @@ Itt lehet kezelni az olvasó tagokat és adatait
     - egy tag adatainak módosítása
 
 ### 2. Könyv
-Itt lehet kezelni a könyvtárban lévő/tartozó könyveket és adatait
+Itt lehet kezelni a könyvtárban lévő/tartozó könyveket és adataikat.
 
 - 1 **Könyv felvétele**
     - új könyv felvétele a könyvtárba
@@ -34,5 +35,38 @@ Itt lehet kezelni a könyvtárban lévő/tartozó könyveket és adatait
 - 4 **Könyvek adatmódosítás**
     - egy könyv adatainak módosítása
 ### 3. Kölcsönzés
+Itt lehet kezelni a kikölcsönzött könyveket és adataikat.
+
+- 1 **Kölcsönzés hozzáadása**
+    - új könyv felvétele a könyvtárba
+- 2 **Kölcsönzés törlése**
+    - könyvek végleges törlése az könyvtárból
+- 3 **Kölcsönzés hosszabítása**
+    - meg tud hosszabbítani egy könyv kölcsönzésének idejét
+
 ### 4. Keresés
+
+- 1 **Tagok keresése**
+    - az olvasótagokból lehet keresni, megmutatja a keresett tag összes adatait
+- 2 **Könyvek keresése**
+    - a könyvtárban lávő összes könyvől lehet keresni, megmutatja a keresett könyv(ek) összes adatait
+- 3 **Kikölcsönzött könyvek listája**
+    - megmutatja a összes kikölcsönzött könyvet és adataikat
+
 ### 0. Kilépés
+Ezzel lehet kilépni a programból, vagy kidob a főmenübe, ha már elkezdtél valamit csinálni. Ez a menüpont minden menübe meg fog jelenni 0. elemként.
+
+
+
+## User főmenü
+A `user`, azaz olvasó tag, kevesebb jogosultsága van mint a könyvtárosnak. 
+
+- 1 **Keresés**
+    - új tagok felvétele
+- 2 **Profil megtekintése**
+    - megtekintheti a saját fiókját és az összes adatait a user.
+- 3 **Tagság törlése**
+    - törölheti a tagságát
+- 4 **Kivett könyvek listája**
+    - megtekintheti az összes kivett könyveit
+
