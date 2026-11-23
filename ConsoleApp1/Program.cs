@@ -34,22 +34,26 @@ string belepes()
         {
             jo = true;
             //menu inditása
-            if (oszlopok[3] == true)
+            if (bool.Parse(oszlopok[3]))
             {
                 inditasAdmin();
+                return "admin";
             }
-            else if (oszlopok[3] == false)
+            else if (!bool.Parse(oszlopok[3]))
             {
                 inditasUser();
+                return "user";
             }
         }
 
     }
 
-    if (jo == false)
+    if (!jo)
     {
         Console.WriteLine("HIBÁS FELHASZNÁLÓNÉV VAGY JELSZÓ!");
     }
+
+    return "sikertelen";
 }
 
 //--------------------------------------------------
@@ -97,7 +101,7 @@ bool inditasAdmin() {
         case "3": kolcsonzes(); break;
         case "4": kereses(); break;
         case "0": Console.WriteLine("Kilépés. . ."); break;
-        default: sikeres = false; break;
+        default: Console.WriteLine("Sikertelen indítás! Adjon meg egy létező opciót!"); sikeres = false; break;
     }
 
     return sikeres;
@@ -114,7 +118,7 @@ bool tag() {
         case "3": listazasTag(); break;
         case "4": modositasTag(); break;
         case "0": Console.WriteLine("Kilépés. . ."); break;
-        default: sikeres = false; break;
+        default: Console.WriteLine("Sikertelen végrehajtás! Adjon meg egy létező opciót!"); sikeres = false; break;
     }
 
     return sikeres;
@@ -131,7 +135,7 @@ bool konyv() {
         case "3": listazasKonyv(); break;
         case "4": modositasKonyv(); break;
         case "0": Console.WriteLine("Kilépés. . ."); break;
-        default: sikeres = false; break;
+        default: Console.WriteLine("Sikertelen végrehajtás! Adjon meg egy létező opciót!"); sikeres = false; break;
     }
 
     return sikeres;
@@ -147,7 +151,7 @@ bool kolcsonzes() {
         case "2": torlesKolcsonzes(); break;
         case "3": hosszabitasKolcsonzes(); break;
         case "0": Console.WriteLine("Kilépés. . ."); break;
-        default: sikeres = false; break;
+        default: Console.WriteLine("Sikertelen végrehajtás! Adjon meg egy létező opciót!"); sikeres = false; break;
     }
 
     return sikeres;
@@ -163,14 +167,14 @@ bool kereses() {
         case "2": konyvKereses(); break;
         case "3": kolcsonzesKereses(); break;
         case "0": Console.WriteLine("Kilépés. . ."); break;
-        default: sikeres = false; break;
+        default: Console.WriteLine("Sikertelen végrehajtás! Adjon meg egy létező opciót!"); sikeres = false; break;
     }
 
     return sikeres;
 }
 
 //-------------------------
-// Tagműveletek
+// Tag
 
 bool felvetelTag()
 {
@@ -330,7 +334,7 @@ bool modositasTag()
 }
 
 //-------------------------
-// Könyvműveletek
+// Könyv
 
 bool felvetelKonyv()
 {
@@ -483,15 +487,75 @@ bool modositasKonyv()
     return sikeres;
 }
 
+//-------------------------
+// Kölcsönzés
+
+bool felvetelKolcsonzes()
+{
+    return false;
+}
+
+bool torlesKolcsonzes()
+{
+    return false;
+}
+
+bool hosszabitasKolcsonzes()
+{
+    return false;
+}
+
+//-------------------------
+// Keresés
+
+bool tagKereses()
+{
+    return false;
+}
+
+bool konyvKereses()
+{
+    return false;
+}
+
+bool kolcsonzesKereses()
+{
+    return false;
+}
+
 //--------------------------------------------------
 // User
 
-void inditasUser()
+bool inditasUser()
 {
     Console.WriteLine("tbt");
+    return false;
 }
 
 //--------------------------------------------------
 // Indító
 
-// Console.WriteLine("=========================\nALEXANDRIA KÖNYVTÁR\n=========================\n\n")
+Console.WriteLine("=========================\nALEXANDRIA KÖNYVTÁR\n=========================\n\n");
+string felhasznalo = belepes();
+
+while (felhasznalo == "sikertelen")
+{
+    felhasznalo = belepes();
+}
+
+if (felhasznalo == "admin")
+{
+    bool sikeres = false;
+    while (!sikeres)
+    {
+        sikeres = inditasAdmin();
+    }
+}
+else
+{
+    bool sikeres = false;
+    while (!sikeres)
+    {
+        sikeres = inditasUser();
+    }
+}
