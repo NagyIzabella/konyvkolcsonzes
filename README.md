@@ -16,6 +16,7 @@ Itt lehet kezelni az olvasó tagokat és adatait.
 
 - 1 **Tag felvétele**
     - új tagok felvétele
+    - új tag bekért adatai(kötelező kitölteni): azonosító(jelszó), név, kor(egész szám)
 - 2 **Tag törlése**
     - egy tag tagságának végleges megszüntetése
 - 3 **Tagok megtekintése**
@@ -28,6 +29,7 @@ Itt lehet kezelni a könyvtárban lévő/tartozó könyveket és adataikat.
 
 - 1 **Könyv felvétele**
     - új könyv felvétele a könyvtárba
+    - új könyv bekért adatai(kötelező kitölteni): azonosító, cím, szerző, műfaj, korhatár(igen/nem)
 - 2 **Könyv törlése**
     - könyvek végleges törlése az könyvtárból
 - 3 **Könyvek megtekintése**
@@ -70,3 +72,18 @@ A `user`, azaz olvasó tag, kevesebb jogosultsága van mint a könyvtárosnak.
 - 4 **Kivett könyvek listája**
     - megtekintheti az összes kivett könyveit
 
+## Szerkezet
+
+### Adatok felírása
+
+Az  adatokat 4 külön fájlba menti a program.
+
+| Név             | Tárolt adat           | 
+| :-------------- | :-------------------- | 
+| `konyvek.csv`   | Teljes könyvtár       |
+| `tagok.csv`     | Tagok adatai          |
+| `kolcsonzes.csv`| Kikölcsönzött könyvek |
+| `login.csv`     | Felhasználók          |
+
+A fájlok helye:
+*\konyvkolcsonzes\ConsoleApp1\bin\Debug\net10.0*
