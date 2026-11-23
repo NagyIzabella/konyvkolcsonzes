@@ -1,10 +1,10 @@
-﻿﻿using System.IO;
+using System.IO;
 
-// konyvek.csv          id(string);cim(string);szerzo(string);mufaj(string);felnott(bool);statusz(bool)\n
+// konyvek.csv          id(string);cim(string);szerzo(string);mufaj(string);korhatar(bool);statusz(bool)\n
 // tagok.csv            id(string);nev(string);kor(int);tagsag_kezdete(string);tagsag_lejarata(string);kikolcsonzott_konyvek(list)
 // kolcsonzes.csv       konyv_id;tag_id_;datum;visszaviteli_ido;meghosszabbitasok
 
-if (!File.Exists("konyvek.csv")) File.WriteAllText("konyvek.csv", "id;cim;szerzo;mufaj;felnott;statusz\n");
+if (!File.Exists("konyvek.csv")) File.WriteAllText("konyvek.csv", "id;cim;szerzo;mufaj;korhatar;statusz\n");
 if (!File.Exists("tagok.csv")) File.WriteAllText("tagok.csv", "id;nev;kor;tagsag_kezdete;tagsag_lejarata;kikolcsonzott_konyvek\n");
 if (!File.Exists("kolcsonzes.csv")) File.WriteAllText("kolcsonzes.csv", "konyv_id;tag_id_;datum;visszaviteli_ido;meghosszabbitasok\n");
 if (!File.Exists("login.csv")) File.WriteAllText("login.csv","felhasznalonev;jelszo\n");
@@ -22,7 +22,7 @@ string belepes()
     Console.Write("Jelszó: ");
     string password = Console.ReadLine();
 
-    foreach (string sor in File.ReadLines("diakok.csv").Skip(1))
+    foreach (string sor in File.ReadLines("login.csv").Skip(1))
     {
         string[] oszlopok = sor.Split(';');
         //if (oszlopok.Length != 3 || !bool.TryParse(oszlopok[2], out bool igaz))
@@ -36,11 +36,11 @@ string belepes()
             //menu inditása
             if (oszlopok[3] == true)
             {
-                inditasAdmin()
+                inditasAdmin();
             }
             else if (oszlopok[3] == false)
             {
-                inditasUser()
+                inditasUser();
             }
         }
 
@@ -50,9 +50,6 @@ string belepes()
     {
         Console.WriteLine("HIBÁS FELHASZNÁLÓNÉV VAGY JELSZÓ!");
     }
-
-
-    // Ide kell a check hogy ki a felhasználó, vagy nem, rád bízom
 }
 
 //--------------------------------------------------
@@ -75,7 +72,12 @@ bool szamE(string bemenet)
 
 bool besorolasCheck(string bemenet)
 {
-    return bemenet == "0" || bemenet == "1";
+    return bemenet == "0" || bemenet == "1" || normalizal(bemenet) == "F" || normalizal(bemenet) == "T" || normalizal(bemenet) == "FALSE" || normalizal(bemenet) == "TRUE";
+}
+
+string adatCheck(string eredeti, string regi, string uj)
+{
+    return normalizal(eredeti) == normalizal(regi) ? uj : eredeti;
 }
 
 //--------------------------------------------------
@@ -364,7 +366,7 @@ bool felvetelKonyv()
             return false;
         }
     }
-    
+
     using StreamWriter sw = File.AppendText("konyvek.csv");
     sw.WriteLine($"{id};{cim};{szerzo};{mufaj};{besorolas == "1"};{true}");
 
@@ -439,10 +441,13 @@ bool modositasKonyv()
     Console.Write("--------------------\nKönyv adatmódosítása\n\nAzonosító: ");
     string id = Console.ReadLine();
 
-    Console.Write("\nHa a könyv SZERZŐJÉT módosítaná, a szerző neve elé rakjon egy 'S' betűt!\nHa a könyv MŰFAJÁT módosítaná, a műfaj neve elé rakjon egy 'M' betűt!\nHa a könyv BESOROLÁSÁT módosítaná, írjon egy 'B' betűt, a program automatikusan átírja a másik kategóriára!\nMinden más esetben a könyv CÍME fog frissülni!\nAz azonosító módosítására NINCS opció!\nFONTOS! Ha az új cím kezdőbetűje megegyezik az említett betűk egyikével ('S', 'M', 'B'), akkor rakjon elé egy felkiáltójelet! (!) \n\nÚj adat: ");
+    Console.Write("Régi adat (Korhatár alapján történő besorolás esetén '1' vagy 'TRUE' ha korhatáros, '0' vagy 'FALSE' ha nem): ");
+    string regiAdat = Console.ReadLine();
+
+    Console.Write("Új adat (Korhatár alapján történő besorolás esetén '1' vagy 'TRUE' ha korhatáros, '0' vagy 'FALSE' ha nem):");
     string ujAdat = Console.ReadLine();
 
-    if (string.IsNullOrWhiteSpace(id) || string.IsNullOrWhiteSpace(ujAdat))
+    if (string.IsNullOrWhiteSpace(id)|| string.IsNullOrWhiteSpace(regiAdat) || string.IsNullOrWhiteSpace(ujAdat))
     {
         Console.WriteLine("Sikertelen módosítás: Adjon meg minden adatot!");
         return false;
@@ -454,10 +459,10 @@ bool modositasKonyv()
     foreach (string konyv in konyvek.Skip(1))
     {
         string[] adatok = konyv.Split(";");
-        if (normalizal(adatok[0]) == normalizal(id))
+        if (normalizal(adatok[0]) == normalizal(id) && normalizal(konyv).Contains(normalizal(regiAdat)))
         {
             benne = true;
-            ujKonyvek.Add($"{adatok[0]};{(normalizalKarakter(ujAdat[0]) == "!" ? ujAdat[1..] : normalizalKarakter(ujAdat[0]) is "S" or "M" or "B" ? adatok[1] : ujAdat)};{(normalizalKarakter(ujAdat[0]) == "S" ? ujAdat[1..] : adatok[2])};{(normalizalKarakter(ujAdat[0]) == "M" ? ujAdat[1..] : adatok[3])};{(normalizalKarakter(ujAdat[0]) == "B" ? !bool.Parse(adatok[4]) : adatok[4])};{adatok[5]}");
+            ujKonyvek.Add($"{adatok[0]};{adatCheck(adatok[1], regiAdat, ujAdat)};{adatCheck(adatok[2], regiAdat, ujAdat)};{adatCheck(adatok[3], regiAdat, ujAdat)};{(besorolasCheck(regiAdat) && besorolasCheck(ujAdat) ? !bool.Parse(adatok[4]) : adatok[4])};{adatok[5]}");
         }
         else
         {
@@ -467,7 +472,7 @@ bool modositasKonyv()
 
     if (!benne)
     {
-        Console.WriteLine("Sikertelen módosítás: A könyv nem szerepel a nyilvántartásban!");
+        Console.WriteLine("Sikertelen módosítás: Ilyen azonosítóval/adattal rendelkező könyv nem szerepel a nyilvántartásban!");
         sikeres = false;
     }
     else
