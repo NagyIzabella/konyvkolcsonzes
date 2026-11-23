@@ -12,34 +12,47 @@ if (!File.Exists("login.csv")) File.WriteAllText("login.csv","felhasznalonev;jel
 //--------------------------------------------------
 // Belépés
 
-void belepes() {
-    bool jo=false;
+string belepes()
+{
+    bool jo = false;
+
     Console.Write("Bejelentkezés\n\nFelhasználónév: ");
     string username = Console.ReadLine();
 
     Console.Write("Jelszó: ");
     string password = Console.ReadLine();
 
-    if (username == "admin" && password == "admin")
+    foreach (string sor in File.ReadLines("diakok.csv").Skip(1))
     {
-        inditasAdmin();
-    }
-    else
-    {
-        foreach (string sor in File.ReadLines("tagok.csv"))
+        string[] oszlopok = sor.Split(';');
+        //if (oszlopok.Length != 3 || !bool.TryParse(oszlopok[2], out bool igaz))
+        //{
+        //    Console.WriteLine($"Hibás sor: {sor}");
+        //    continue;
+        //}
+        if (oszlopok[1]==username && oszlopok[2]==password)
         {
-            if (sor.Contains(username) && (sor.Contains(password)))
+            jo = true;
+            //menu inditása
+            if (oszlopok[3] == true)
             {
-                jo = true;
-                inditasUser();
+                inditasAdmin()
+            }
+            else if (oszlopok[3] == false)
+            {
+                inditasUser()
             }
         }
 
-        if (!jo)
-        {
-            Console.WriteLine("HIBÁS FELHASZNÁLÓNÉV VAGY JELSZÓ!");
-        }
     }
+
+    if (jo == false)
+    {
+        Console.WriteLine("HIBÁS FELHASZNÁLÓNÉV VAGY JELSZÓ!");
+    }
+
+
+    // Ide kell a check hogy ki a felhasználó, vagy nem, rád bízom
 }
 
 //--------------------------------------------------
