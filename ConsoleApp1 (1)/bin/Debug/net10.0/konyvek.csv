@@ -1,0 +1,21 @@
+id;cim;szerzo;mufaj;korhatar;statusz
+01;Harry Potter és a bölcsek köve;J. K. Rowling;fantasy;false;true
+02;A Gyűrűk Ura: A Gyűrű Szövetsége;J. R. R. Tolkien;fantasy;false;true
+03;A kis herceg;Antoine de Saint-Exupéry;mesekönyv;false;true
+04;Egri csillagok;Gárdonyi Géza;történelmi regény;false;true
+05;A Pál utcai fiúk;Molnár Ferenc;ifjúsági regény;false;true
+06;1984;George Orwell;disztópia;false;true
+07;Az alkimista;Paulo Coelho;kalandregény;false;true
+08;A Da Vinci-kód;Dan Brown;thriller;false;true
+09;Az éhezők viadala;Suzanne Collins;disztópia;false;true
+10;Szürke ötven árnyalata;E. L. James;romantikus;true;true
+11;Amerikai pszichó;Bret Easton Ellis;pszichothriller;true;true
+12;Száz év magány;Gabriel García Márquez;mágikus realizmus;false;true
+13;A Hobbit;J. R. R. Tolkien;fantasy;false;true
+14;Büszkeség és balítélet;Jane Austen;romantikus;false;true
+15;Az ember tragédiája;Madách Imre;drámai költemény;false;true
+16;Abigél;Szabó Magda;ifjúsági regény;false;true
+17;A nyomorultak;Victor Hugo;történelmi regény;false;true
+18;Dűne;Frank Herbert;sci-fi;false;true
+19;Bűn és bűnhődés;Fjodor Mihajlovics Dosztojevszkij;pszichológiai regény;false;true
+20;Alice Csodaországban;Lewis Carroll;mesekönyv;false;true
